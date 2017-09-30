@@ -29,12 +29,14 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     note.cpp \
-    scale.cpp
+    scale.cpp \
+    chord.cpp
 
 HEADERS += \
         mainwindow.h \
     note.h \
-    scale.h
+    scale.h \
+    chord.h
 
 FORMS += \
         mainwindow.ui
