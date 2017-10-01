@@ -19,7 +19,7 @@ Chord::Chord(std::vector<Note> _notes) {
         { DIM, { UNISON, MINOR_THIRD, DIMINISHED_FIFTH } },
         { MAJOR7, { UNISON, MAJOR_THIRD, PERFECT_FIFTH, MAJOR_SEVENTH } },
         { MINOR7, { UNISON, MINOR_THIRD, PERFECT_FIFTH, MINOR_SEVENTH } },
-        { DIM7, { UNISON, MINOR_THIRD, DIMINISHED_FIFTH, MINOR_SEVENTH } },
+        { m7B5, { UNISON, MINOR_THIRD, DIMINISHED_FIFTH, MINOR_SEVENTH } },
         { DOM7, { UNISON, MAJOR_THIRD, PERFECT_FIFTH, MINOR_SEVENTH } },
     };
 
@@ -42,12 +42,12 @@ Chord::Chord(std::vector<Note> _notes) {
 QString Chord::getName() const {
     std::map<Type, QString> mapping = {
         { NONE, "NONE" },
-        { MAJOR, "maj" },
-        { MINOR, "min" },
-        { MAJOR7, "maj7" },
-        { MINOR7, "min7" },
+        { MAJOR, "" },
+        { MINOR, "m" },
+        { MAJOR7, "M7" },
+        { MINOR7, "m7" },
         { DIM, "dim" },
-        { DIM7, "dim7" },
+        { m7B5, "m7b5" },
         { DOM7, "dom7" },
         { SUS2, "sus2" },
         { SUS4, "sus4" },
@@ -58,7 +58,11 @@ QString Chord::getName() const {
 }
 
 std::vector<ScaleNote> Chord::getNotes() const {
-    return notes;
+	return notes;
+}
+
+Note Chord::getRoot() const {
+	return notes[0].first;
 }
 
 void Chord::print() {
@@ -67,4 +71,9 @@ void Chord::print() {
          std::cout << note.first.toString().toStdString() << ", ";
     }
     std::cout << std::endl;
+}
+
+bool Chord::isInScale(QString scale) const {
+    auto find = std::find(scales.begin(), scales.end(), scale);
+    return find != scales.end();
 }

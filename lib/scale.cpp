@@ -47,6 +47,7 @@ Scale::Scale(Note::Sound key, Type type) {
              };
             break;
 
+		/*
         case MAJOR_PENTATONIC:
             fix_letters = false;
             intervals = {
@@ -70,6 +71,7 @@ Scale::Scale(Note::Sound key, Type type) {
                 OCTAVE,
             };
             break;
+		*/
     }
 
     scale.push_back({notes[0], UNISON});
@@ -83,6 +85,8 @@ Scale::Scale(Note::Sound key, Type type) {
         //std::cout << "i = " << i << ", letter = " << letter.toStdString() << std::endl;
     }
     scale.push_back({notes[0], OCTAVE});
+	
+	buildChords();
 }
 
 QString Scale::printScale() const {
@@ -96,19 +100,21 @@ QString Scale::printScale() const {
         }
     }
 
-    return out;
+	return out;
+}
+
+std::vector<Scale::Type> Scale::getScaleTypes() {
+	return {MAJOR, MINOR};
 }
 
 std::vector<Chord> Scale::getChords() {
-    std::vector<Chord> ret;
+	return chords;
+}
+
+void Scale::buildChords() {
     auto _scale = scale;
     _scale.pop_back();
     _scale.insert(_scale.end(), scale.begin(), scale.end());
-
-    std::map<Scale::Type, std::vector<QString>> mappings = {
-        { MAJOR, { "maj", "min", "min", "maj", "maj", "min", "dim" } },
-        { MINOR, { "min", "dim", "maj", "min", "min", "maj", "maj" } },
-    };
 
     switch (type) {
         case MAJOR:
@@ -119,45 +125,22 @@ std::vector<Chord> Scale::getChords() {
                     _scale[i + 2].first,
                     _scale[i + 4].first,
                 };
-                ret.push_back(Chord(chord_notes));
+                chords.push_back(Chord(chord_notes));
 
-                chord_notes = {
-                    _scale[i].first,
-                    _scale[i + 2].first,
-                    _scale[i + 4].first,
-                    _scale[i + 6].first,
-                };
-                ret.push_back(Chord(chord_notes));
-                //chords.push_back(ChordPosition(mappings[type][i] + "7", { i, i + 2, i + 4, i + 6}));
+				chord_notes.push_back(_scale[i + 6].first);
+
+                chords.push_back(Chord(chord_notes));
             }
             break;
     }
-    //ret = buildChords(chords);
-    return ret;
 }
-/*
-std::vector<Chord> Scale::buildChords(std::vector<ChordPosition> chord_positions) {
-    std::vector<Chord> ret;
 
-    auto _scale = scale;
-    _scale.pop_back();
-    _scale.insert(_scale.end(), scale.begin(), scale.end());
-    for (auto chord_position : chord_positions) {
-
-        auto _notes = chord_position.note_positions;
-        QString root = _scale[_notes[0]].toString();
-        QString name = root + chord_position.name;
-
-        std::vector<Note> chordNotes;
-        for (auto i : _notes) {
-            chordNotes.push_back(_scale[i]);
-        }
-
-        Chord chord(name, chordNotes);
-        ret.push_back(chord);
-    }
-
-    return ret;
-
+QString Scale::getName() const {
+	std::map<Type, QString> mapping = {
+		{ MAJOR, "Major" },
+		{ MINOR, "minor" },
+	};
+	
+	QString name = scale[0].first.toString() + " " + mapping[type];
+	return name;
 }
-*/

@@ -30,6 +30,21 @@ std::map<Note::Sound, std::map<QString, QString>> Note::notations = {
     { Sound::Gsharp, { { "G", "G#" }, { "A", "Ab" } } },
 };
 
+std::vector<Note::Sound> Note::sounds = {
+	Sound::A,
+	Sound::Asharp,
+	Sound::B,
+	Sound::C,
+	Sound::Csharp,
+	Sound::D,
+	Sound::Dsharp,
+	Sound::E,
+	Sound::F,
+	Sound::Fsharp,
+	Sound::G,
+	Sound::Gsharp,
+};
+
 Note::Note(Sound sound) : sound(sound) {
     letter = notes[sound];
 }
@@ -61,21 +76,6 @@ QString Note::getLetter() const {
 }
 
 Interval Note::getIntervals(const Note &other) const {
-    std::vector<Sound> sounds = {
-        Sound::A,
-        Sound::Asharp,
-        Sound::B,
-        Sound::C,
-        Sound::Csharp,
-        Sound::D,
-        Sound::Dsharp,
-        Sound::E,
-        Sound::F,
-        Sound::Fsharp,
-        Sound::G,
-        Sound::Gsharp,
-    };
-
     auto find = std::find(sounds.begin(), sounds.end(), sound);
 
     std::rotate(sounds.begin(), find, sounds.end());

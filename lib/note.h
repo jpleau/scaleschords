@@ -23,6 +23,8 @@ public:
     static std::map<Sound, QString> notes;
 
     static std::map<Sound, std::map<QString, QString>> notations;
+	
+	static std::vector<Sound> sounds;
 
     Note(Sound sound);
 

@@ -7,4 +7,12 @@ CONFIG += c++14
 SOURCES += main.cpp
 
 INCLUDEPATH += ../lib
-LIBS += -L../lib/libscaleschords.dll
+DEPENDPATH += ../libs
+
+unix {
+    LIBS += -L../lib -lscaleschords
+}
+
+win32 {
+    LIBS += -L../lib/debug -lscaleschords
+}
