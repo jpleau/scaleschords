@@ -58,8 +58,6 @@ QString Note::toString(QString letter) const {
 }
 
 std::vector<Note> Note::getNotes(Sound first) {
-    Note _first(first);
-
     std::vector<Note> ret = {
         Note(A), Note(Asharp), Note(B), Note(C), Note(Csharp), Note(D), Note(Dsharp), Note(E), Note(F), Note(Fsharp), Note(G), Note(Gsharp)
     };
@@ -85,4 +83,6 @@ Interval Note::getIntervals(const Note &other) const {
             return static_cast<Interval>(i);
         }
     }
+
+    return Interval::NONE;
 }

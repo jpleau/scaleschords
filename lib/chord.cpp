@@ -65,12 +65,12 @@ Note Chord::getRoot() const {
 	return notes[0].first;
 }
 
-void Chord::print() {
-    std::cout << getName().toStdString() << ": ";
+QString Chord::print() {
+    QString out;
     for (auto note : notes) {
-         std::cout << note.first.toString().toStdString() << ", ";
+         out += note.first.toString() + ", ";
     }
-    std::cout << std::endl;
+    return out;
 }
 
 bool Chord::isInScale(QString scale) const {

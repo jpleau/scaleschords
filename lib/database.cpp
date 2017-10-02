@@ -92,3 +92,16 @@ std::vector<QString> Database::findScaleByChords(std::vector<QString> _chords) {
     return current;
 
 }
+
+
+std::vector<QString> Database::getChordsByRoot(QString root) {
+    std::vector<QString> ret;
+
+    for (auto chord : chords) {
+        if (chord.second.getRoot().toString() == root) {
+            ret.push_back(chord.first);
+        }
+    }
+
+    return ret;
+}

@@ -18,6 +18,8 @@ public:
 	std::map<QString, Chord> & getChords();
 
     std::vector<QString> findScaleByChords(std::vector<QString>);
+
+    std::vector<QString> getChordsByRoot(QString root);
 private:
 	std::map<QString, Scale> scales;
 	std::map<QString, Chord> chords;

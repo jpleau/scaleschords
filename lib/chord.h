@@ -36,7 +36,7 @@ public:
 	
 	Note getRoot() const;
 
-    void print();
+    QString print();
 	
 	void addScale(QString name) {
 		auto contains = std::find(scales.begin(), scales.end(), name);
@@ -54,6 +54,9 @@ public:
     bool isInScale(QString scale) const;
 
 
+    Type getType() const {
+        return type;
+    }
 private:
     Type type;
     std::vector<ScaleNote> notes;

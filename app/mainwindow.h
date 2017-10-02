@@ -1,6 +1,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "database.h"
+
 #include <QMainWindow>
 
 namespace Ui {
@@ -17,6 +19,7 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    Database database;
 };
 
 #endif // MAINWINDOW_H
