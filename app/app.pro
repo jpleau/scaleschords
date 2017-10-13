@@ -4,9 +4,11 @@ QT += core widgets
 
 CONFIG += c++14
 
-SOURCES += main.cpp mainwindow.cpp
+SOURCES += main.cpp mainwindow.cpp \
+    notecheckbox.cpp
 
-HEADERS += mainwindow.h
+HEADERS += mainwindow.h \
+    notecheckbox.h
 
 INCLUDEPATH += ../lib
 DEPENDPATH += ../libs
@@ -18,5 +20,5 @@ unix {
 }
 
 win32 {
-    LIBS += -L../lib/release -lscaleschords
+    LIBS += -L../lib/debug -lscaleschords
 }

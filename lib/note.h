@@ -31,6 +31,8 @@ public:
     QString toString(QString letter = "") const;
 
     static std::vector<Note> getNotes(Sound first = Sound::A);
+	
+	static std::vector<QString> getNoteNames();
 
     Sound getSound() const {
         return sound;

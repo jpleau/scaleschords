@@ -66,7 +66,18 @@ std::vector<Note> Note::getNotes(Sound first) {
 
     std::rotate(ret.begin(), f, ret.end());
 
-    return ret;
+	return ret;
+}
+
+std::vector<QString> Note::getNoteNames() {
+	auto notes = getNotes(Sound::A);
+	auto ret = std::vector<QString>();
+	
+	for (auto note : notes) {
+		ret.push_back(note.toString());
+	}
+	
+	return ret;
 }
 
 QString Note::getLetter() const {

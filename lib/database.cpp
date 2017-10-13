@@ -22,13 +22,21 @@ Database::Database() {
 	
 	for (auto sound : sounds) {
 		for (auto scale_type : scales_types) {
-			Scale scale(sound, scale_type);
+			Scale scale(sound, scale_type.first);
 			
 			QString scale_name = scale.getName();
+
+			if (scale_name == "") {
+				continue;
+			}
 
 			std::vector<Chord> scale_chords = scale.getChords();
 			
 			scales[scale.getName()] = scale;
+			
+			for (auto note : scale.getNotes()) {
+				scales_by_note[note].push_back(scale_name);
+			}
 			
 			for (auto chord : scale_chords) {
 				QString chord_name = chord.getName();
@@ -90,7 +98,42 @@ std::vector<QString> Database::findScaleByChords(std::vector<QString> _chords) {
     }
 
     return current;
+	
+}
 
+#include <QDebug>
+
+std::vector<QString> Database::findScaleByNotes(std::vector<Note::Sound> _sounds, bool only) {
+	if (_sounds.size() == 0) {
+        return {};
+    }
+
+    if (_sounds.size() == 1) {
+        return scales_by_note[_sounds[0]];
+    }
+
+    std::vector<QString> current = scales_by_note[_sounds[0]];
+
+    for (size_t i = 1; i < _sounds.size(); ++i) {
+        std::vector<QString> test = scales_by_note[_sounds[i]];
+        std::vector<QString> tmp;
+        std::set_intersection(current.begin(), current.end(), test.begin(), test.end(), std::back_inserter(tmp));
+        current.clear();
+        current = tmp;
+    }
+
+	if (only) {
+		auto nb_sounds = _sounds.size();
+		std::vector<QString> tmp;
+		std::copy_if(current.begin(), current.end(), std::back_inserter(tmp), [=](QString scale_name) {
+			Scale &s = this->getScale(scale_name);
+			return s.getNotes().size() == nb_sounds;
+		});
+		
+		current = tmp;
+	}
+	
+    return current;
 }
 
 
@@ -103,5 +146,13 @@ std::vector<QString> Database::getChordsByRoot(QString root) {
         }
     }
 
-    return ret;
+	return ret;
+}
+
+std::map<Scale::Type, QString> Database::getScalesTypes() {
+	return Scale::getScaleTypes();
+}
+
+std::map<Note::Sound, QString> Database::getNotes() {
+	return Note::notes;
 }

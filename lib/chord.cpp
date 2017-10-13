@@ -13,14 +13,24 @@ Chord::Chord(std::vector<Note> _notes) {
 
     type = NONE;
 
+    // C C# D D# E F F# G G# A A# B C
+    // B C C# D D# E F F# G G# A A# B C
     std::map<Type, std::vector<Interval>> mappings = {
         { MAJOR, { UNISON, MAJOR_THIRD, PERFECT_FIFTH } },
         { MINOR, { UNISON, MINOR_THIRD, PERFECT_FIFTH } },
-        { DIM, { UNISON, MINOR_THIRD, DIMINISHED_FIFTH } },
+        { DIM, { UNISON, MINOR_THIRD, DIMINISHED_FIFTH, } },
+
+        // Seventh chords
         { MAJOR7, { UNISON, MAJOR_THIRD, PERFECT_FIFTH, MAJOR_SEVENTH } },
         { MINOR7, { UNISON, MINOR_THIRD, PERFECT_FIFTH, MINOR_SEVENTH } },
-        { m7B5, { UNISON, MINOR_THIRD, DIMINISHED_FIFTH, MINOR_SEVENTH } },
+
         { DOM7, { UNISON, MAJOR_THIRD, PERFECT_FIFTH, MINOR_SEVENTH } },
+
+        { DIM7, { UNISON, MINOR_THIRD, DIMINISHED_FIFTH, MAJOR_SIXTH } },
+
+        { HALF_DIM7, { UNISON, MINOR_THIRD, DIMINISHED_FIFTH, MINOR_SEVENTH } },
+
+        { MIN_MAJ_7, { UNISON, MINOR_THIRD, PERFECT_FIFTH, MAJOR_SEVENTH } },
     };
 
     for (auto mapping : mappings) {
@@ -39,21 +49,29 @@ Chord::Chord(std::vector<Note> _notes) {
     }
 }
 
-QString Chord::getName() const {
+QString Chord::getName(bool real_name) const {
     std::map<Type, QString> mapping = {
         { NONE, "NONE" },
         { MAJOR, "" },
         { MINOR, "m" },
-        { MAJOR7, "M7" },
-        { MINOR7, "m7" },
+
+        { DOM7, "7" },
+        { MAJOR7, "maj7" },
+        { MINOR7, "min7" },
+        { DIM7, "dim7" },
         { DIM, "dim" },
-        { m7B5, "m7b5" },
-        { DOM7, "dom7" },
+        { HALF_DIM7, "m7b5" },
+        { MIN_MAJ_7, "m/M7" },
+
         { SUS2, "sus2" },
         { SUS4, "sus4" },
     };
 
-    QString name = notes[0].first.toString() + mapping[type];
+	QString note_letter = "";
+	if (real_name) {
+		note_letter = notes[0].first.getLetter();
+	}
+    QString name = notes[0].first.toString(note_letter) + mapping[type];
     return name;
 }
 
@@ -65,15 +83,27 @@ Note Chord::getRoot() const {
 	return notes[0].first;
 }
 
-QString Chord::print() {
+QString Chord::print(bool real_note) {
     QString out;
-    for (auto note : notes) {
-         out += note.first.toString() + ", ";
+    for (auto &note : notes) {
+		QString  note_letter = "";
+		if (real_note) {
+			note_letter = note.first.getLetter();
+		}
+		out += note.first.toString(note_letter);
+		if (&note != &notes.back()) {
+			out += ", ";
+		}
     }
     return out;
 }
 
 bool Chord::isInScale(QString scale) const {
     auto find = std::find(scales.begin(), scales.end(), scale);
-    return find != scales.end();
+	return find != scales.end();
+}
+
+bool Chord::isSeventh() const {
+
+	return std::find(seventh_types.begin(), seventh_types.end(), type) != seventh_types.end();
 }

@@ -4,6 +4,9 @@
 #include "database.h"
 
 #include <QMainWindow>
+#include <QListWidgetItem>
+
+class NoteCheckbox;
 
 namespace Ui {
 class MainWindow;
@@ -19,7 +22,17 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    Database database;
+    Database db;
+	
+	void update_scales();
+	void scale_changed();
+	
+	void select_scale_note(QString);
+	void select_scale_type(QString);
+	
+	void note_checked(bool);
+	
+	std::vector<NoteCheckbox *> note_checkboxes;
 };
 
 #endif // MAINWINDOW_H
