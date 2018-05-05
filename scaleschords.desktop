@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=ScalesChords
+Exec=scaleschords
+Terminal=false
+Type=Application
+StartupNotify=true

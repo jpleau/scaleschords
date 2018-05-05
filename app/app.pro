@@ -28,4 +28,7 @@ win32 {
 
 target.path = $$PREFIX/bin
 
-INSTALLS += target
+desktop.path = $$DATADIR/applications
+desktop.files = ../scaleschords.desktop
+
+INSTALLS += target desktop
