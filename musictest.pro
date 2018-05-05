@@ -1,11 +1,8 @@
 QT       += core gui
 
-TARGET = scaleschords
+CONFIG += c++14 ordered
 
 TEMPLATE = subdirs
 
 SUBDIRS = lib app
 
-CONFIG += c++14
-
-app.depends = lib

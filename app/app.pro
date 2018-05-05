@@ -1,3 +1,5 @@
+include(../musictest.pri)
+
 TEMPLATE = app
 TARGET = scaleschords
 QT += core widgets
@@ -22,3 +24,8 @@ unix {
 win32 {
     LIBS += -L../lib/debug -lscaleschords
 }
+
+
+target.path = $$PREFIX/bin
+
+INSTALLS += target
